@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ציקו · Chico</title>
+  <meta name="description" content="עוזר קולי מבוסס Gemini — רק לדבר איתו. A voice-only AI companion powered by Gemini." />
+  <meta name="theme-color" content="#05070d" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%2338e1ff' stroke-width='8'/></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <main id="stage" data-state="asleep">
+    <header class="bar">
+      <h1 class="wordmark">ציקו<span>Chico</span></h1>
+      <button id="settings-toggle" class="icon-button" aria-label="הגדרות / Settings" title="הגדרות / Settings">⚙</button>
+    </header>
+
+    <button id="orb" class="orb" aria-label="דבר עם ציקו / Talk to Chico">
+      <span class="orb-core"></span>
+      <span class="orb-ring"></span>
+      <span class="orb-ring slow"></span>
+      <span class="orb-glow"></span>
+    </button>
+
+    <p id="state" class="state">ציקו במנוחה</p>
+    <p id="caption" class="caption" data-who="chico" aria-live="polite"></p>
+    <p id="hint" class="hint">לחץ על העיגול כדי להתחיל · Tap the orb to begin</p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <section id="settings" class="settings" aria-label="הגדרות">
+      <div class="field" id="key-row">
+        <label for="key">מפתח Gemini API</label>
+        <div class="key-input">
+          <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…" />
+          <button id="key-save" class="ghost">שמור</button>
+        </div>
+        <small>נשמר רק בדפדפן שלך. קבל מפתח ב-<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>.</small>
+      </div>
+
+      <div class="field">
+        <label for="voice">קול</label>
+        <select id="voice"></select>
+      </div>
+
+      <div class="field">
+        <label for="lang">שפת דיבור</label>
+        <select id="lang"></select>
+        <small>ציקו עונה תמיד בשפה שדיברת בה. זה רק מה שהמיקרופון מצפה לשמוע.</small>
+      </div>
+
+      <label class="switch"><input id="hands-free" type="checkbox" /> <span>שיחה רציפה — הוא ממשיך להקשיב</span></label>
+      <label class="switch"><input id="captions" type="checkbox" /> <span>כתוביות על המסך</span></label>
+
+      <button id="reset" class="ghost wide">שיחה חדשה</button>
+    </section>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

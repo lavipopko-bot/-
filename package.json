@@ -1,0 +1,14 @@
+{
+  "name": "chico",
+  "version": "1.0.0",
+  "description": "Chico — a voice-only AI companion powered by Gemini. JARVIS-shaped, Brazilian-accented, speaks Hebrew and English.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server/server.js",
+    "static": "npx --yes serve . -l 8787"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
