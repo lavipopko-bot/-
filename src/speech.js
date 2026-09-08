@@ -32,7 +32,10 @@ export class Ears {
         const result = event.results[i];
         const text = result[0].transcript.trim();
         if (result.isFinal) {
-          if (text) {
+          // One utterance per session, so the first final is the only one we
+          // trust: Safari on iOS is known to repeat finals, which would
+          // otherwise send the same sentence to Chico twice.
+          if (text && !this.gotResult) {
             this.gotResult = true;
             this.handlers.onFinal?.(text);
           }

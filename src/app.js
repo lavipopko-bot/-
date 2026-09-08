@@ -210,6 +210,32 @@ function trimHistory() {
   if (history.length > MAX_TURNS) history = history.slice(-MAX_TURNS);
 }
 
+// ----------------------------------------------------------------- wake lock
+
+// A phone screen that sleeps mid-sentence ends the conversation, so the screen
+// is held awake while Chico is in play and released the moment he rests.
+let wakeLock = null;
+
+async function holdScreenAwake() {
+  if (!('wakeLock' in navigator) || wakeLock) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch {
+    /* denied, or the battery is too low — not worth telling the user */
+  }
+}
+
+function letScreenSleep() {
+  wakeLock?.release().catch(() => {});
+  wakeLock = null;
+}
+
+// Switching tabs drops the lock silently; take it back on return if we're mid-talk.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && awake && state !== 'asleep') holdScreenAwake();
+});
+
 // ---------------------------------------------------------------------- view
 
 const STATE_TEXT = {
@@ -222,6 +248,8 @@ const STATE_TEXT = {
 
 function setState(next) {
   state = next;
+  if (next === 'asleep') letScreenSleep();
+  else holdScreenAwake();
   const copy = STATE_TEXT[next];
   ui.stage.dataset.state = next;
   ui.state.textContent = prefs.lang === 'he-IL' ? copy.he : copy.en;
